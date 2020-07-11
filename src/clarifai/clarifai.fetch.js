@@ -46,12 +46,25 @@ const responseDataProcess = (data) => {
 // *** FUNC TO RETURN FACE COORDINATES
 const calculateFaceLocation = (coordinates) => {
   const image = document.getElementById('image');
+  const imageOffSet = document.getElementById('fr-el').getBoundingClientRect();
   const width = Number(image.width);
   const height = Number(image.height);
   return {
-    leftCol: coordinates.left_col * width,
-    topRow: coordinates.top_row * height,
-    rightCol: width - coordinates.right_col * width,
-    bottomRow: height - coordinates.bottom_row * height + 13,
+    leftCol: coordinates.left_col * width + 32,
+    topRow: coordinates.top_row * height + 32,
+    rightCol: width - coordinates.right_col * width + 32,
+    bottomRow: height - coordinates.bottom_row * height + 32,
+    infoBoxLeft: imageOffSet.left + coordinates.right_col * width + 32,
+    infoBoxTop: coordinates.top_row * height + 32 + 434,
   };
 };
+
+// const calculateInfoLocation = (coordinates) => {
+//   const image = document.getElementById('image');
+//   const width = Number(image.width);
+//   const height = Number(image.height);
+//   return {
+//     topRow: coordinates.top_row * height,
+//     leftCol: coordinates.left_col * width,
+//   };
+// };

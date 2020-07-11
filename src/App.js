@@ -5,7 +5,7 @@ import Logo from './components/logo/Logo';
 import FaceRecognition from './components/facerecognition/FaceRecognition.js';
 import ImageLinkForm from './components/imagelinkform/ImageLinkForm';
 import DetailTypist from './components/detailstypist/detailtypist';
-import Particles from 'react-particles-js';
+// import Particles from 'react-particles-js';
 import { faceDetectModel, generalModel } from './clarifai/clarifai.fetch';
 
 // *** ACTUAL COMPONENT MAIN HOOK FUNC ***
@@ -50,12 +50,14 @@ const App = () => {
 
   return (
     <div className="App tc white">
-      <Particles params={particles} className="particles" />
+      {/* <Particles params={particles} className="particles" /> */}
       <Navigation />
       <Logo />
       <ImageLinkForm onInputChange={onInputChange} onSubmit={onSubmit} />
-      {showInfo.age1 ? <DetailTypist showInfo={showInfo} /> : null}
       <FaceRecognition box={box} imageUrl={imgUrl} />
+      {showInfo.age1 ? (
+        <DetailTypist showInfo={showInfo} box={box} imageUrl={imgUrl} />
+      ) : null}
     </div>
   );
 };
@@ -66,18 +68,18 @@ export default App;
 
 // *** RENDER BACKGROUND PARTICLES SETUP
 
-const particles = {
-  particles: {
-    number: {
-      value: 60,
-      density: {
-        enable: true,
-        value_area: 800,
-      },
-    },
-    color: '#33ff33',
-    line_linked: {
-      color: '#33ff33',
-    },
-  },
-};
+// const particles = {
+//   particles: {
+//     number: {
+//       value: 60,
+//       density: {
+//         enable: true,
+//         value_area: 800,
+//       },
+//     },
+//     color: '#33ff33',
+//     line_linked: {
+//       color: '#33ff33',
+//     },
+//   },
+// };

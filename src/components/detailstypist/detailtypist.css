@@ -1,3 +1,13 @@
 .sp-info {
   color: #3f3;
 }
+
+.info-container {
+  position: absolute;
+  display: inline-block;
+  text-align: left;
+  cursor: default;
+  z-index: 10;
+  background-color: black;
+  padding: 0px 4px 4px 4px;
+}
