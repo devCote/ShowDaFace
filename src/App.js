@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { imagesRef } from './firebase/firebase';
 import './App.scss';
 import Navigation from './components/navigation/Navigation';
 import Logo from './components/logo/Logo';
@@ -15,6 +16,7 @@ const App = () => {
   const [imgUrl, setImgUrl] = useState();
   const [box, setBox] = useState({});
   const [showInfo, setShowInfo] = useState({});
+  const [progress, setProgress] = useState(0);
 
   const onInputChange = (event) => {
     setInput(event.target.value);
@@ -26,6 +28,33 @@ const App = () => {
     // run func to display face
     setBox(await faceDetectModel(input));
     setShowInfo(await generalModel(input));
+  };
+
+  const onFileUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const uploadTask = imagesRef.put(file);
+
+      uploadTask.on(
+        'state_changed',
+        (snapshot) => {
+          const progress = Math.round(
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+          );
+          setProgress(progress);
+        },
+        (error) => {
+          alert(error);
+        },
+        async () => {
+          const bucketImgUrl = await imagesRef.getDownloadURL();
+          setImgUrl(bucketImgUrl);
+          setBox(await faceDetectModel(bucketImgUrl));
+          setShowInfo(await generalModel(bucketImgUrl));
+          setProgress(0);
+        }
+      );
+    }
   };
 
   const handleInputRulesBrake = () => {
@@ -53,7 +82,12 @@ const App = () => {
       {/* <Particles params={particles} className="particles" /> */}
       <Navigation />
       <Logo />
-      <ImageLinkForm onInputChange={onInputChange} onSubmit={onSubmit} />
+      <ImageLinkForm
+        onInputChange={onInputChange}
+        onSubmit={onSubmit}
+        onFileUpload={onFileUpload}
+        progress={progress}
+      />
       <FaceRecognition box={box} imageUrl={imgUrl} />
       {showInfo.age1 ? (
         <DetailTypist showInfo={showInfo} box={box} imageUrl={imgUrl} />

@@ -5,7 +5,7 @@ import 'react-typist/dist/Typist.css';
 const FaceRecognition = ({ box, imageUrl }) => {
   return (
     <div className="center mt0">
-      <div className="absolute mt2 pa4" id="fr-el">
+      <div className="absolute pa4" id="fr-el">
         <img id="image" alt="" src={imageUrl} width="500px" height="auto" />
         <div
           className="bounding-box"

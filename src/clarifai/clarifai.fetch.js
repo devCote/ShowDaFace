@@ -22,9 +22,14 @@ export const generalModel = async (input) => {
     id: Clarifai.DEMOGRAPHICS_MODEL,
   });
   const predictModel = await initModel.predict(input);
-  const responseData = await predictModel.outputs[0].data.regions[0].data
-    .concepts;
-  return responseDataProcess(await responseData);
+  try {
+    const responseData = await predictModel.outputs[0].data.regions[0].data
+      .concepts;
+    return responseDataProcess(await responseData);
+  } catch (err) {
+    alert('Error: Human not found');
+    window.location.reload();
+  }
 };
 
 const responseDataProcess = (data) => {
@@ -55,7 +60,7 @@ const calculateFaceLocation = (coordinates) => {
     rightCol: width - coordinates.right_col * width + 32,
     bottomRow: height - coordinates.bottom_row * height + 32,
     infoBoxLeft: imageOffSet.left + coordinates.right_col * width + 32,
-    infoBoxTop: coordinates.top_row * height + 32 + 434,
+    infoBoxTop: coordinates.top_row * height + 32 + 482,
   };
 };
 
