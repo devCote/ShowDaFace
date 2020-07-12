@@ -3,7 +3,6 @@ import { useDencrypt } from 'use-dencrypt-effect';
 
 const GeneralInfo = ({ generalInfo }) => {
   const values = [];
-  console.log(Object.values(generalInfo));
   Object.values(generalInfo).map((item) => {
     values.push(
       `Possible match: ${item.name.toUpperCase()} ${Math.floor(
@@ -34,7 +33,6 @@ const GeneralInfo = ({ generalInfo }) => {
     const imageOffSet = document
       .getElementById('fr-el')
       .getBoundingClientRect();
-    console.log(imageOffSet);
     return imageOffSet;
   };
 
@@ -42,7 +40,7 @@ const GeneralInfo = ({ generalInfo }) => {
     <div
       className="info-container"
       style={{
-        top: 484 + 32,
+        top: 484 + 10,
         left: calculateImageOffSet().left + 32,
       }}
     >

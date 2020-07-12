@@ -14,7 +14,8 @@ export const faceDetectModel = async (input) => {
     const coordinatesFromRes =
       predictModel.outputs[0].data.regions[0].region_info.bounding_box;
     return calculateFaceLocation(await coordinatesFromRes);
-  } catch (e) {
+  } catch (err) {
+    alert('FACE_DETECT Data undefined', err);
     return {};
   }
 };
@@ -29,6 +30,7 @@ export const demographicsModel = async (input) => {
     const responseData = predictModel.outputs[0].data.regions[0].data.concepts;
     return responseDataProcess(await responseData);
   } catch (err) {
+    alert('DEMOGRAPHICS Data undefined', err);
     return {};
   }
 };
@@ -43,6 +45,7 @@ export const generalModel = async (input) => {
     const responseData = predictModel.outputs[0].data.concepts;
     return responseData;
   } catch (err) {
+    alert('GENERAL Data undefined', err);
     return {};
   }
 };

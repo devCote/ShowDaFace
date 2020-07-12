@@ -84,7 +84,7 @@ const App = () => {
       return handleInputRulesBrake();
     } else return true;
   }
-  console.log(generalInfo);
+  console.log(showInfo);
   return (
     <div className="App tc white">
       <Particles params={particles} className="particles" />
@@ -97,7 +97,7 @@ const App = () => {
         progress={progress}
       />
       <FaceRecognition box={box} imageUrl={imgUrl} />
-      {box.topRow ? (
+      {showInfo.age1 ? (
         <DetailTypist showInfo={showInfo} box={box} imageUrl={imgUrl} />
       ) : null}
       {generalInfo.length > 0 ? (
