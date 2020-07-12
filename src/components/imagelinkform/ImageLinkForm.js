@@ -1,16 +1,16 @@
 import React from 'react';
+import './ImageLinkForm.css';
 
 const ImageLinkForm = ({ onInputChange, onSubmit, onFileUpload, progress }) => {
   return (
     <div>
-      <p className="f4" style={{ color: '#3f3', cursor: 'default' }}>
+      <p className="f4 descr" style={{ color: '#3f3', cursor: 'default' }}>
         {"Magic brain will reveal person's info in the picture"}
       </p>
-      <p className="f4" style={{ color: '#3f3', cursor: 'default' }}>
-        {'Copy and paste image link address or upload your own'}
+      <p className="f4 descr" style={{ color: '#3f3', cursor: 'default' }}>
+        {'Copy and paste image URL or upload your own'}
       </p>
       <div className="center">
-        {/* <div className=""> */}
         <input
           type="text"
           placeholder="url://"
@@ -19,16 +19,15 @@ const ImageLinkForm = ({ onInputChange, onSubmit, onFileUpload, progress }) => {
           id="input-link"
         />
         <button
-          className="btn f4 w-30 grow link ph3 pv2 dib white bg-purple br2 hover-bg-light-purple"
+          className="btn f4 w-15 grow link dim black ph3 pv2 dib white bg-purple"
           onClick={onSubmit}
         >
           Detect
         </button>
-
-        {/* </div> */}
       </div>
       <div className="center mt3" id="upload">
         <input
+          className="link dim black mw5 dt hide-child ba b--black-20 br2 pointer"
           style={{ color: '#3f3' }}
           type="file"
           accept=".jpg, .jpeg, .png"
@@ -36,7 +35,7 @@ const ImageLinkForm = ({ onInputChange, onSubmit, onFileUpload, progress }) => {
         />
       </div>
       <div className="center mt3">
-        {progress > 0 ? <span>Loading... Please Wait</span> : null}
+        {progress > 0 ? <span>Loading... Please Wait...</span> : null}
         {progress > 0 ? <progress value={progress} max="100" /> : null}
       </div>
     </div>

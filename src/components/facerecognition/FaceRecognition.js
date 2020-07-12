@@ -1,6 +1,5 @@
 import React from 'react';
 import './FaceRecognition.css';
-import 'react-typist/dist/Typist.css';
 
 const FaceRecognition = ({ box, imageUrl }) => {
   return (

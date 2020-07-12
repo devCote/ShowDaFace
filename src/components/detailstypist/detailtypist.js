@@ -1,7 +1,36 @@
 import React from 'react';
 import './detailtypist.css';
+import { useDencrypt } from 'use-dencrypt-effect';
 
 const DetailTypist = ({ showInfo, box }) => {
+  const values = [
+    `Object: ${capitalizeFirstLetter(showInfo.gender)} human`,
+    `Origin: ${capitalizeFirstLetter(showInfo.race)}`,
+    `Age: ${showInfo.age1}-${showInfo.age2} years old`,
+  ];
+
+  const DecrInfoTyper = () => {
+    const { result, dencrypt } = useDencrypt();
+
+    React.useEffect(() => {
+      let i = 0;
+
+      const action = setInterval(() => {
+        dencrypt(values[i]);
+
+        i = i === values.length - 1 ? 0 : i + 1;
+      }, 4000);
+
+      return () => clearInterval(action);
+    }, []);
+
+    return (
+      <div>
+        <p className="p-text">{result}</p>
+      </div>
+    );
+  };
+
   return (
     <div
       className="info-container"
@@ -10,19 +39,7 @@ const DetailTypist = ({ showInfo, box }) => {
         left: box.infoBoxLeft,
       }}
     >
-      <div className="info-box">
-        <span className="sp-info f5">
-          Object: {capitalizeFirstLetter(showInfo.gender)} human
-        </span>
-        <br />
-        <span className="sp-info f5">
-          Origin: {capitalizeFirstLetter(showInfo.race)}
-        </span>
-        <br />
-        <span className="sp-info f5">
-          Age: {showInfo.age1}-{showInfo.age2} years old
-        </span>
-      </div>
+      <DecrInfoTyper values={values} />
     </div>
   );
 };

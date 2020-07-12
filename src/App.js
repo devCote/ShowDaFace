@@ -6,8 +6,13 @@ import Logo from './components/logo/Logo';
 import FaceRecognition from './components/facerecognition/FaceRecognition.js';
 import ImageLinkForm from './components/imagelinkform/ImageLinkForm';
 import DetailTypist from './components/detailstypist/detailtypist';
-// import Particles from 'react-particles-js';
-import { faceDetectModel, generalModel } from './clarifai/clarifai.fetch';
+import Particles from 'react-particles-js';
+import {
+  faceDetectModel,
+  generalModel,
+  demographicsModel,
+} from './clarifai/clarifai.fetch';
+import GeneralInfo from './General_Info/General_Info';
 
 // *** ACTUAL COMPONENT MAIN HOOK FUNC ***
 
@@ -16,6 +21,7 @@ const App = () => {
   const [imgUrl, setImgUrl] = useState();
   const [box, setBox] = useState({});
   const [showInfo, setShowInfo] = useState({});
+  const [generalInfo, setGeneralInfo] = useState({});
   const [progress, setProgress] = useState(0);
 
   const onInputChange = (event) => {
@@ -27,7 +33,8 @@ const App = () => {
     setImgUrl(input);
     // run func to display face
     setBox(await faceDetectModel(input));
-    setShowInfo(await generalModel(input));
+    setShowInfo(await demographicsModel(input));
+    setGeneralInfo(await generalModel(input));
   };
 
   const onFileUpload = (e) => {
@@ -50,7 +57,8 @@ const App = () => {
           const bucketImgUrl = await imagesRef.getDownloadURL();
           setImgUrl(bucketImgUrl);
           setBox(await faceDetectModel(bucketImgUrl));
-          setShowInfo(await generalModel(bucketImgUrl));
+          setShowInfo(await demographicsModel(bucketImgUrl));
+          setGeneralInfo(await generalModel(input));
           setProgress(0);
         }
       );
@@ -76,10 +84,10 @@ const App = () => {
       return handleInputRulesBrake();
     } else return true;
   }
-
+  console.log(generalInfo);
   return (
     <div className="App tc white">
-      {/* <Particles params={particles} className="particles" /> */}
+      <Particles params={particles} className="particles" />
       <Navigation />
       <Logo />
       <ImageLinkForm
@@ -89,8 +97,11 @@ const App = () => {
         progress={progress}
       />
       <FaceRecognition box={box} imageUrl={imgUrl} />
-      {showInfo.age1 ? (
+      {box.topRow ? (
         <DetailTypist showInfo={showInfo} box={box} imageUrl={imgUrl} />
+      ) : null}
+      {generalInfo.length > 0 ? (
+        <GeneralInfo generalInfo={generalInfo} />
       ) : null}
     </div>
   );
@@ -102,18 +113,18 @@ export default App;
 
 // *** RENDER BACKGROUND PARTICLES SETUP
 
-// const particles = {
-//   particles: {
-//     number: {
-//       value: 60,
-//       density: {
-//         enable: true,
-//         value_area: 800,
-//       },
-//     },
-//     color: '#33ff33',
-//     line_linked: {
-//       color: '#33ff33',
-//     },
-//   },
-// };
+const particles = {
+  particles: {
+    number: {
+      value: 60,
+      density: {
+        enable: true,
+        value_area: 800,
+      },
+    },
+    color: '#33ff33',
+    line_linked: {
+      color: '#33ff33',
+    },
+  },
+};
