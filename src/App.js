@@ -11,8 +11,10 @@ import {
   faceDetectModel,
   generalModel,
   demographicsModel,
+  celebrityModel,
 } from './clarifai/clarifai.fetch';
-import GeneralInfo from './General_Info/General_Info';
+import GeneralInfo from './components/General_Info/General_Info';
+import Celebrity from './components/Celebrity/Celebrity';
 
 // *** ACTUAL COMPONENT MAIN HOOK FUNC ***
 
@@ -23,6 +25,7 @@ const App = () => {
   const [showInfo, setShowInfo] = useState({});
   const [generalInfo, setGeneralInfo] = useState({});
   const [progress, setProgress] = useState(0);
+  const [celebrity, setCelebrity] = useState({});
 
   const onInputChange = (event) => {
     setInput(event.target.value);
@@ -35,6 +38,7 @@ const App = () => {
     setBox(await faceDetectModel(input));
     setShowInfo(await demographicsModel(input));
     setGeneralInfo(await generalModel(input));
+    setCelebrity(await celebrityModel(input));
   };
 
   const onFileUpload = (e) => {
@@ -58,7 +62,8 @@ const App = () => {
           setImgUrl(bucketImgUrl);
           setBox(await faceDetectModel(bucketImgUrl));
           setShowInfo(await demographicsModel(bucketImgUrl));
-          setGeneralInfo(await generalModel(input));
+          setGeneralInfo(await generalModel(bucketImgUrl));
+          setCelebrity(await celebrityModel(bucketImgUrl));
           setProgress(0);
         }
       );
@@ -84,7 +89,6 @@ const App = () => {
       return handleInputRulesBrake();
     } else return true;
   }
-  console.log(showInfo);
   return (
     <div className="App tc white">
       <Particles params={particles} className="particles" />
@@ -102,6 +106,9 @@ const App = () => {
       ) : null}
       {generalInfo.length > 0 ? (
         <GeneralInfo generalInfo={generalInfo} />
+      ) : null}
+      {celebrity.length > 0 ? (
+        <Celebrity celebrity={celebrity} box={box} />
       ) : null}
     </div>
   );

@@ -2,14 +2,12 @@ import React from 'react';
 import { useDencrypt } from 'use-dencrypt-effect';
 
 const GeneralInfo = ({ generalInfo }) => {
-  const values = [];
-  Object.values(generalInfo).map((item) => {
-    values.push(
-      `Possible match: ${item.name.toUpperCase()} ${Math.floor(
+  const values = Object.values(generalInfo).map(
+    (item) =>
+      `Possible traits: ${item.name.toUpperCase()} ${Math.floor(
         item.value * 100
       )}%`
-    );
-  });
+  );
 
   const DecrGeneralTyper = () => {
     const { result, dencrypt } = useDencrypt();
@@ -24,7 +22,7 @@ const GeneralInfo = ({ generalInfo }) => {
       }, 4000);
 
       return () => clearInterval(action);
-    }, []);
+    }, [dencrypt]);
 
     return <p className="p-text">{result}</p>;
   };
@@ -40,7 +38,7 @@ const GeneralInfo = ({ generalInfo }) => {
     <div
       className="info-container"
       style={{
-        top: 484 + 10,
+        top: 494,
         left: calculateImageOffSet().left + 32,
       }}
     >

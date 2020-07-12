@@ -15,7 +15,7 @@ export const faceDetectModel = async (input) => {
       predictModel.outputs[0].data.regions[0].region_info.bounding_box;
     return calculateFaceLocation(await coordinatesFromRes);
   } catch (err) {
-    alert('FACE_DETECT Data undefined', err);
+    alert('FACEDETECT undefined', err);
     return {};
   }
 };
@@ -30,7 +30,7 @@ export const demographicsModel = async (input) => {
     const responseData = predictModel.outputs[0].data.regions[0].data.concepts;
     return responseDataProcess(await responseData);
   } catch (err) {
-    alert('DEMOGRAPHICS Data undefined', err);
+    alert('DEMOGRAPHICS undefined', err);
     return {};
   }
 };
@@ -45,7 +45,22 @@ export const generalModel = async (input) => {
     const responseData = predictModel.outputs[0].data.concepts;
     return responseData;
   } catch (err) {
-    alert('GENERAL Data undefined', err);
+    alert('GENERAL DATA undefined', err);
+    return {};
+  }
+};
+
+// --- CELEBRITY MODEL ---
+export const celebrityModel = async (input) => {
+  const initModel = await app.models.initModel({
+    id: Clarifai.CELEBRITY_MODEL,
+  });
+  try {
+    const predictModel = await initModel.predict(input);
+    const responseData = predictModel.outputs[0].data.regions[0].data.concepts;
+    return responseData;
+  } catch (err) {
+    alert('CELEBRITY undefined', err);
     return {};
   }
 };
@@ -58,7 +73,6 @@ const responseDataProcess = (data) => {
   const gender = data[20].name === 'feminine' ? 'female' : 'male';
   let race;
   if (data[22].name === 'hispanic, latino, or spanish origin') {
-    console.log('work');
     race = 'Latino or spanish';
   } else {
     race = data[22].name;
@@ -85,6 +99,7 @@ const calculateFaceLocation = (coordinates) => {
     bottomRow: height - coordinates.bottom_row * height + 32,
     infoBoxLeft: imageOffSet.left + coordinates.right_col * width + 33,
     infoBoxTop: coordinates.top_row * height + 32 + 484,
+    celebBotom: coordinates.bottom_row * height + 32 + 484,
   };
 };
 

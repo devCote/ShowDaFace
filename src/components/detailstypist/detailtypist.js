@@ -22,7 +22,7 @@ const DetailTypist = ({ showInfo, box }) => {
       }, 4000);
 
       return () => clearInterval(action);
-    }, []);
+    }, [dencrypt]);
 
     return (
       <div>
