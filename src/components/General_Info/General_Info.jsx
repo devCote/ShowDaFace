@@ -31,15 +31,24 @@ const GeneralInfo = ({ generalInfo }) => {
     const imageOffSet = document
       .getElementById('fr-el')
       .getBoundingClientRect();
-    return imageOffSet;
+    const bodyOffset = document.getElementById('body').getBoundingClientRect();
+
+    const infoPossition = {
+      top: bodyOffset.bottom + 10,
+      left: imageOffSet.left + 32,
+    };
+
+    return infoPossition;
   };
+
+  const { top, left } = calculateImageOffSet();
 
   return (
     <div
       className="info-container"
       style={{
-        top: 494,
-        left: calculateImageOffSet().left + 32,
+        top: top,
+        left: left,
       }}
     >
       <DecrGeneralTyper values={values} />

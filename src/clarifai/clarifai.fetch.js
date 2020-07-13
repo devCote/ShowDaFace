@@ -89,6 +89,7 @@ const responseDataProcess = (data) => {
 // *** FUNC TO RETURN FACE COORDINATES
 const calculateFaceLocation = (coordinates) => {
   const image = document.getElementById('image');
+  const bodyOffset = document.getElementById('body').getBoundingClientRect();
   const imageOffSet = document.getElementById('fr-el').getBoundingClientRect();
   const width = Number(image.width);
   const height = Number(image.height);
@@ -98,8 +99,8 @@ const calculateFaceLocation = (coordinates) => {
     rightCol: width - coordinates.right_col * width + 32,
     bottomRow: height - coordinates.bottom_row * height + 32,
     infoBoxLeft: imageOffSet.left + coordinates.right_col * width + 33,
-    infoBoxTop: coordinates.top_row * height + 32 + 484,
-    celebBotom: coordinates.bottom_row * height + 32 + 484,
+    infoBoxTop: coordinates.top_row * height + 32 + bodyOffset.bottom,
+    celebBotom: coordinates.bottom_row * height + 32 + bodyOffset.bottom,
   };
 };
 

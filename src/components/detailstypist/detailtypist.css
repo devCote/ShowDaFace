@@ -13,6 +13,7 @@
 }
 
 .p-text {
-  margin: 5 0px;
   color: #3f3;
+  word-wrap: break-word;
+  word-break: break-word;
 }
