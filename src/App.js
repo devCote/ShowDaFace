@@ -5,7 +5,6 @@ import Navigation from './components/navigation/Navigation';
 import Logo from './components/logo/Logo';
 import FaceRecognition from './components/facerecognition/FaceRecognition.js';
 import ImageLinkForm from './components/imagelinkform/ImageLinkForm';
-import DetailTypist from './components/detailstypist/detailtypist';
 import Particles from 'react-particles-js';
 import {
   faceDetectModel,
@@ -13,33 +12,71 @@ import {
   demographicsModel,
   celebrityModel,
 } from './clarifai/clarifai.fetch';
-import GeneralInfo from './components/General_Info/General_Info';
-import Celebrity from './components/Celebrity/Celebrity';
 
 // *** ACTUAL COMPONENT MAIN HOOK FUNC ***
 
 const App = () => {
   const [input, setInput] = useState();
   const [imgUrl, setImgUrl] = useState();
-  const [box, setBox] = useState({});
   const [showInfo, setShowInfo] = useState({});
   const [generalInfo, setGeneralInfo] = useState({});
   const [progress, setProgress] = useState(0);
   const [celebrity, setCelebrity] = useState({});
+  const [coordinates, setCoordinates] = useState({});
+  const [box, setBox] = useState({});
 
   const onInputChange = (event) => {
     setInput(event.target.value);
+  };
+
+  React.useEffect(() => {
+    const handleResize = () => setBox(calculateFaceLocation(coordinates));
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  });
+
+  const calculateFaceLocation = (coordinates) => {
+    const image = document.getElementById('image');
+    const imageRect = image.getBoundingClientRect();
+    console.log(imageRect.x);
+    const width = Number(image.width);
+    const height = Number(image.height);
+    return {
+      leftCol: coordinates.left_col * width + 32,
+      topRow: coordinates.top_row * height + 32,
+      rightCol: width - coordinates.right_col * width + 32,
+      bottomRow: height - coordinates.bottom_row * height + 32,
+      infoBoxLeft:
+        coordinates.right_col * width + imageRect.left - imageRect.x + 32,
+      infoBoxTop: coordinates.top_row * height + 32,
+      celebLeft:
+        coordinates.left_col * width + imageRect.left - imageRect.x + 32,
+      celebBotom: coordinates.bottom_row * height + 32 + 4,
+    };
   };
 
   const onSubmit = async () => {
     if (!submitRulesCheck(input)) return;
     setImgUrl(input);
     // run func to display face
-    setBox(await faceDetectModel(input));
+    const coordinatesFromModel = await faceDetectModel(input);
+    setCoordinates(coordinatesFromModel);
+    setBox(calculateFaceLocation(coordinatesFromModel));
     setShowInfo(await demographicsModel(input));
     setGeneralInfo(await generalModel(input));
     setCelebrity(await celebrityModel(input));
   };
+
+  // const [width, setWidth] = useState(window.innerWidth);
+  // React.useEffect(() => {
+  //   const handleResize = () => {
+  //     setWidth(window.innerWidth);
+  //   };
+  //   window.addEventListener('resize', handleResize);
+  //   return () => {
+  //     window.removeEventListener('resize', handleResize);
+  //   };
+  // });
 
   const onFileUpload = (e) => {
     const file = e.target.files[0];
@@ -60,7 +97,9 @@ const App = () => {
         async () => {
           const bucketImgUrl = await imagesRef.getDownloadURL();
           setImgUrl(bucketImgUrl);
-          setBox(await faceDetectModel(bucketImgUrl));
+          const coordinatesFromModel = await faceDetectModel(bucketImgUrl);
+          setCoordinates(coordinatesFromModel);
+          setBox(calculateFaceLocation(coordinatesFromModel));
           setShowInfo(await demographicsModel(bucketImgUrl));
           setGeneralInfo(await generalModel(bucketImgUrl));
           setCelebrity(await celebrityModel(bucketImgUrl));
@@ -100,16 +139,13 @@ const App = () => {
         onFileUpload={onFileUpload}
         progress={progress}
       />
-      <FaceRecognition box={box} imageUrl={imgUrl} />
-      {showInfo.age1 ? (
-        <DetailTypist showInfo={showInfo} box={box} imageUrl={imgUrl} />
-      ) : null}
-      {generalInfo.length > 0 ? (
-        <GeneralInfo generalInfo={generalInfo} />
-      ) : null}
-      {celebrity.length > 0 ? (
-        <Celebrity celebrity={celebrity} box={box} />
-      ) : null}
+      <FaceRecognition
+        box={box}
+        imageUrl={imgUrl}
+        showInfo={showInfo}
+        generalInfo={generalInfo}
+        celebrity={celebrity}
+      />
     </div>
   );
 };

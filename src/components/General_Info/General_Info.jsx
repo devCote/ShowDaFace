@@ -27,21 +27,16 @@ const GeneralInfo = ({ generalInfo }) => {
     return <p className="p-text">{result}</p>;
   };
 
-  const calculateImageOffSet = () => {
-    const imageOffSet = document
-      .getElementById('fr-el')
-      .getBoundingClientRect();
-    const bodyOffset = document.getElementById('body').getBoundingClientRect();
-
+  const calculateOffSet = () => {
     const infoPossition = {
-      top: bodyOffset.bottom + 10,
-      left: imageOffSet.left + 32,
+      top: 10,
+      left: 32,
     };
 
     return infoPossition;
   };
 
-  const { top, left } = calculateImageOffSet();
+  const { top, left } = calculateOffSet();
 
   return (
     <div

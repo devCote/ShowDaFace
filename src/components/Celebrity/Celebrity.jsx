@@ -28,20 +28,12 @@ const Celebrity = ({ celebrity, box }) => {
 
     return <p className="p-text">{result}</p>;
   };
-
-  const calculateImageOffSet = () => {
-    const imageOffSet = document
-      .getElementById('fr-el')
-      .getBoundingClientRect();
-    return imageOffSet;
-  };
-
   return (
     <div
       className="info-container"
       style={{
-        top: box.celebBotom + 4,
-        left: calculateImageOffSet().left + box.leftCol - 1,
+        top: box.celebBotom,
+        left: box.celebLeft,
       }}
     >
       <DecrCelebTyper values={values} />

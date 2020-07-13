@@ -13,7 +13,7 @@ export const faceDetectModel = async (input) => {
     const predictModel = await initModel.predict(input);
     const coordinatesFromRes =
       predictModel.outputs[0].data.regions[0].region_info.bounding_box;
-    return calculateFaceLocation(await coordinatesFromRes);
+    return coordinatesFromRes;
   } catch (err) {
     alert('FACEDETECT undefined', err);
     return {};
@@ -87,22 +87,6 @@ const responseDataProcess = (data) => {
 };
 
 // *** FUNC TO RETURN FACE COORDINATES
-const calculateFaceLocation = (coordinates) => {
-  const image = document.getElementById('image');
-  const bodyOffset = document.getElementById('body').getBoundingClientRect();
-  const imageOffSet = document.getElementById('fr-el').getBoundingClientRect();
-  const width = Number(image.width);
-  const height = Number(image.height);
-  return {
-    leftCol: coordinates.left_col * width + 32,
-    topRow: coordinates.top_row * height + 32,
-    rightCol: width - coordinates.right_col * width + 32,
-    bottomRow: height - coordinates.bottom_row * height + 32,
-    infoBoxLeft: imageOffSet.left + coordinates.right_col * width + 33,
-    infoBoxTop: coordinates.top_row * height + 32 + bodyOffset.bottom,
-    celebBotom: coordinates.bottom_row * height + 32 + bodyOffset.bottom,
-  };
-};
 
 // const calculateInfoLocation = (coordinates) => {
 //   const image = document.getElementById('image');

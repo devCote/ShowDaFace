@@ -3,7 +3,7 @@ import './ImageLinkForm.css';
 
 const ImageLinkForm = ({ onInputChange, onSubmit, onFileUpload, progress }) => {
   return (
-    <div>
+    <div id="img-link-form">
       <p className="f4 descr" style={{ color: '#3f3', cursor: 'default' }}>
         {"Magic brain will reveal person's info in the picture"}
       </p>
