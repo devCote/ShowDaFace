@@ -38,7 +38,6 @@ const App = () => {
   const calculateFaceLocation = (coordinates) => {
     const image = document.getElementById('image');
     const imageRect = image.getBoundingClientRect();
-    console.log(imageRect.x);
     const width = Number(image.width);
     const height = Number(image.height);
     return {
